@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 主题 -->
+	<constant name="struts.ui.theme" value="simple" />
+	<constant name="struts.devMode" value="true" />
+	
+	<package name="surveyPkg" namespace="/" extends="struts-default">
+		
+		<!-- 注册拦截器 -->
+		<interceptors>
+			<!-- 自定以拦截器 -->
+			<interceptor name="LoginInterceptor" class="com.chenjb.struts.interceptor.LoginInterceptor"/>
+			<!-- 自定以拦截器栈 -->
+			<interceptor-stack name="surveyStack">
+				<interceptor-ref name="LoginInterceptor"/>
+				<interceptor-ref name="paramsPrepareParamsStack"/>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 定义默认拦截器栈 -->
+		<default-interceptor-ref name="surveyStack"/>
+
+		<!-- 定义全局结果 -->
+		<global-results>
+			<result name="login">/index.jsp</result>
+			
+			<!-- 重定向到Action -->
+			<result name="designSurveyAction" type="redirectAction">
+				<param name="actionName">SurveyAction_designSurvey</param>
+				<param name="namespace">/</param>
+				<param name="sid">${sid}</param>
+			</result>
+		</global-results>
+
+
+		<!-- 注册Action -->
+		<action name="RegAction_*" class="com.chenjb.struts.action.RegAction"
+			method="{1}">
+			<result name="regView">/reg.jsp</result>
+			<result name="success">/index.jsp</result>
+			<result name="input">/reg.jsp</result>
+		</action>
+
+		<!-- 登陆Action -->
+		<action name="LoginAction_*" class="com.chenjb.struts.action.LoginAction"
+			method="{1}">
+			<result name="loginPage">/index.jsp</result>
+			<result name="success">/index.jsp</result>
+			<result name="input">/index.jsp</result>
+		</action>
+		
+		<!-- 调查Action -->
+		<action name="SurveyAction_*" class="com.chenjb.struts.action.SurveyAction" method="{1}">
+			<result name="designSurveyPage">/designSurvey.jsp</result>
+			<result name="mySurveyListPage">/mySurveyList.jsp</result>
+			<result name="editSurveyPage">/editSurvey.jsp</result>
+		</action>
+		
+		<action name="PageAction_*" class="com.chenjb.struts.action.PageAction" method="{1}">
+			<result name="addPagePage">/editPage.jsp</result>
+		</action>
+		
+	</package>
+</struts>

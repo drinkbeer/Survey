@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.chenjb.domain">
+	<class name="Page" table="pages">
+		<id name="id" column="id" type="integer">
+			<generator class="identity" />
+		</id>
+		<property name="title" column="title" type="string" length="100" />
+		<property name="description" column="description" type="string" 
+			length="200" />
+		<!-- 映射从Page到Survey之间的多对一关联关系 -->
+		<many-to-one name="survey" column="surveyid" class="Survey" />
+		<!-- 映射从Page到Question之间一对多关联关系 -->
+		<set name="questions" inverse="true">
+			<key column="pageid" />
+			<one-to-many class="Question" />
+		</set>
+	</class>
+</hibernate-mapping>
